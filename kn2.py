@@ -28,10 +28,12 @@ def winner():
     x_list = [k for k in new_ground if new_ground[k] == "x"]
     o_list = [k for k in new_ground if new_ground[k] == "o"]
     for comb in win_comb:
-        if comb[0] and comb[1] and comb[2] in x_list:
-            return "x winner"
-        elif comb[0] and comb[1] and comb[2] in o_list:
-            return "o winner"
+        if comb[0] in x_list and comb[1] in x_list and comb[2] in x_list:
+            return "x winner", x_list
+        elif comb[0] in o_list and comb[1] in o_list and comb[2] in o_list:
+            return "o winner", o_list
+        elif len(new_ground.keys()) == 9:
+            return 'победила дружба'
         else:
             pass
 
