@@ -25,8 +25,8 @@ class ShotType(enum.Enum):
 
 
 class Tools:
-# удаляет повторяющиеся точки
     @staticmethod
+# удаляет повторяющиеся точки
     def distinct(values: list[Dot]) -> list[Dot]:
         element1: int = 0
         while element1 <= len(values) - 1:
@@ -179,9 +179,10 @@ class Board:
     def draw_board(self, player_ships: list[list[Dot]], player_shoots: list[Dot],
                    ai_ships: list[list[Dot]], ai_shoots: list[Dot]):
         player_board: list[str] = Board(self.size, self.ships_size).draw_ships_str(player_ships, ai_shoots, True)
-        ai_board: list[str] = Board(self.size, self.ships_size).draw_ships_str(ai_ships, player_shoots, True)
+        ai_board: list[str] = Board(self.size, self.ships_size).draw_ships_str(ai_ships, player_shoots, False)
         for index in range(len(player_board)):
             print(player_board[index], '     ', ai_board[index])
+
 
 class Movement:
     def __init__(self, ships_dots: list[list[Dot]], shoot_dots: list[Dot], size: int):
