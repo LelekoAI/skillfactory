@@ -179,7 +179,7 @@ class Board:
     def draw_board(self, player_ships: list[list[Dot]], player_shoots: list[Dot],
                    ai_ships: list[list[Dot]], ai_shoots: list[Dot]):
         player_board: list[str] = Board(self.size, self.ships_size).draw_ships_str(player_ships, ai_shoots, True)
-        ai_board: list[str] = Board(self.size, self.ships_size).draw_ships_str(ai_ships, player_shoots, False)
+        ai_board: list[str] = Board(self.size, self.ships_size).draw_ships_str(ai_ships, player_shoots, True)
         for index in range(len(player_board)):
             print(player_board[index], '     ', ai_board[index])
 
@@ -256,26 +256,26 @@ class Player:
 
 # Возвращает тип выстрела игрока
     def player(self):
-        steper: Dot = Movement(self.ships_dots, self.shoot_dots, self.size).step()
+        movement: Movement = Movement(self.ships_dots, self.shoot_dots, self.size)
+        steper: Dot = movement.step()
         self.shoot_dots.append(steper)
-        shoot_type: ShotType = Movement(self.ships_dots, self.shoot_dots, self.size).shoot()
+        shoot_type: ShotType = movement.shoot()
         if shoot_type == ShotType.kill:
             players_object = Board(self.size, self.ships_size)
-            shoot_object = Movement(self.ships_dots, self.shoot_dots, self.size)
-            for dot in players_object.counter_ship(shoot_object.ship_dots_by_shot(shoot_object.step())):
+            for dot in players_object.counter_ship(movement.ship_dots_by_shot(steper)):
                 self.shoot_dots.append(dot)
         Tools.distinct(self.shoot_dots)
         return shoot_type
 
 # Возвращает тип выстрела игрока
     def ai_player(self):
-        steper: Dot = Movement(self.ships_dots, self.shoot_dots, self.size).step_ai()
+        movement: Movement = Movement(self.ships_dots, self.shoot_dots, self.size)
+        steper: Dot = movement.step_ai()
         self.shoot_dots.append(steper)
-        shoot_type: ShotType = Movement(self.ships_dots, self.shoot_dots, self.size).shoot()
+        shoot_type: ShotType = movement.shoot()
         if shoot_type == ShotType.kill:
             ai_object = Board(self.size, self.ships_size)
-            shoot_object = Movement(self.ships_dots, self.shoot_dots, self.size)
-            for dot in ai_object.counter_ship(shoot_object.ship_dots_by_shot(shoot_object.step_ai())):
+            for dot in ai_object.counter_ship(movement.ship_dots_by_shot(steper)):
                 self.shoot_dots.append(dot)
         Tools.distinct(self.shoot_dots)
         return shoot_type
@@ -313,7 +313,7 @@ class Logic:
         while True:
             any_win = False
             while True:
-                print('Игрока ходит')
+                print('Игрок ходит')
                 shoot_type: ShotType = Player(ai_ships, player_shoots).player()
                 Board(self.size, self.ships_size).draw_board(player_ships, player_shoots, ai_ships, ai_shoots)
                 any_win = Logic().all_ship_kill(ai_ships, player_shoots)
