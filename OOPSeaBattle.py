@@ -191,7 +191,7 @@ class Movement:
         self.size = size
 
 # возвращаем тип выстрела
-    def shoot(self):
+    def shoot(self) -> ShotType:
         last_shoot: Dot = self.shoot_dots[len(self.shoot_dots) - 1]
         for ship in self.ships_dots:
             if last_shoot not in ship:
@@ -233,7 +233,7 @@ class Movement:
             return point
 
 # возвращает точку хода для ИИ
-    def step_ai(self):
+    def step_ai(self) -> Dot:
         while True:
             step_dot: Dot = Dot(randint(0, self.size - 1), randint(0, self.size - 1))
             if step_dot in self.shoot_dots:
@@ -241,7 +241,7 @@ class Movement:
             return step_dot
 
 # возвращает список точек корабля который убит
-    def ship_dots_by_shot(self, point: Dot) ->list[Dot]:
+    def ship_dots_by_shot(self, point: Dot) -> list[Dot]:
         for ship in self.ships_dots:
             if point in ship:
                 return ship
@@ -256,7 +256,7 @@ class Player:
         self.ships_size = [3, 2, 2, 1, 1, 1, 1]
 
 # Возвращает тип выстрела игрока
-    def player(self):
+    def player(self) -> ShotType:
         movement: Movement = Movement(self.ships_dots, self.shoot_dots, self.size)
         steper: Dot = movement.step()
         self.shoot_dots.append(steper)
@@ -269,7 +269,7 @@ class Player:
         return shoot_type
 
 # Возвращает тип выстрела игрока
-    def ai_player(self):
+    def ai_player(self) -> ShotType:
         movement: Movement = Movement(self.ships_dots, self.shoot_dots, self.size)
         steper: Dot = movement.step_ai()
         self.shoot_dots.append(steper)
